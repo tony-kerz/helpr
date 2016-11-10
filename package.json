@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tony-kerz/helpr.git"
+    "url": "https://github.com/tony-kerz/node-helpr.git"
   },
   "scripts": {
     "ava": "ava ./test/ava",
