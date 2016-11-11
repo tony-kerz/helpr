@@ -14,5 +14,3 @@ miscellaneous helper functions for javascript/node
 1. `cd {this repo name}`
 1. `npm install`
 1. `npm test`
-
-no
