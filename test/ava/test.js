@@ -14,7 +14,7 @@ import {
   compress,
   decompress,
   COMPRESSION
-} from '../../src/helpr'
+} from '../../src'
 
 const dbg = debug('app:helpr')
 
