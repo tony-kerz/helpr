@@ -1,12 +1,13 @@
 # node-helpr
 
-miscellaneous helper functions for javascript/node
+miscellaneous helper functions
 
-> see tests for examples
+> see [tests](test) for examples
 
 ## usage
 
 - `npm install helpr`
+- `import {...} from 'helpr'`
 
 ## development
 
