@@ -6,8 +6,8 @@ miscellaneous helper functions
 
 ## usage
 
-- `npm install helpr`
-- `import {...} from 'helpr'`
+1. `npm install helpr`
+1. `import {...} from 'helpr'`
 
 ## development
 

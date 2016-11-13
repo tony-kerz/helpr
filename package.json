@@ -8,8 +8,7 @@
     "url": "https://github.com/tony-kerz/node-helpr.git"
   },
   "scripts": {
-    "ava": "ava ./test/ava",
-    "ava-debug": "cross-env DEBUG=test:*,app:* ava test/ava",
+    "ava": "cross-env DEBUG=test:*,app:* ava test/ava",
     "test": "npm run ava",
     "prebuild": "npm run test",
     "build": "babel ./src -d ./dist",
