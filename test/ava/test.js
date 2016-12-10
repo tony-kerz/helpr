@@ -13,7 +13,8 @@ import {
   getKeyArray,
   compress,
   decompress,
-  COMPRESSION
+  COMPRESSION,
+  SEPARATOR
 } from '../../src'
 
 const dbg = debug('app:helpr')
@@ -105,12 +106,12 @@ test('getKey', (t)=>{
 
 test('getKeyArray', t => {
   t.deepEqual(getKeyArray('foo'), ['foo'])
-  t.deepEqual(getKeyArray('foo', 'bar'), ['foo', ':', 'bar'])
-  t.deepEqual(getKeyArray('foo', ['bar']), ['foo', ':', 'bar'])
-  t.deepEqual(getKeyArray(['foo'], 'bar'), ['foo', ':', 'bar'])
-  t.deepEqual(getKeyArray(['foo', 'bar']), ['foo', ':', 'bar'])
-  t.deepEqual(getKeyArray(['foo', ['bar', ':', 'baz']]), ['foo', ':', 'bar', ':', 'baz'])
-  t.deepEqual(getKeyArray([['foo', ':', 'bar'], 'baz']), ['foo', ':', 'bar', ':', 'baz'])
+  t.deepEqual(getKeyArray('foo', 'bar'), ['foo', SEPARATOR, 'bar'])
+  t.deepEqual(getKeyArray('foo', ['bar']), ['foo', SEPARATOR, 'bar'])
+  t.deepEqual(getKeyArray(['foo'], 'bar'), ['foo', SEPARATOR, 'bar'])
+  t.deepEqual(getKeyArray(['foo', 'bar']), ['foo', SEPARATOR, 'bar'])
+  t.deepEqual(getKeyArray(['foo', ['bar', SEPARATOR, 'baz']]), ['foo', SEPARATOR, 'bar', SEPARATOR, 'baz'])
+  t.deepEqual(getKeyArray([['foo', SEPARATOR, 'bar'], 'baz']), ['foo', SEPARATOR, 'bar', SEPARATOR, 'baz'])
 })
 
 test('compress', t => {
