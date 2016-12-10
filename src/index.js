@@ -6,7 +6,7 @@ import zlib from 'zlib'
 const zip5Regex = /^\d{5}$/
 const zipRegex = /^\d{5}(\d{4})?$/
 const hexRegex = /^[0-9A-Fa-f]+$/
-const separator = ':'
+export const SEPARATOR = ':'
 export const COMPRESSION = 'base64'
 
 export function isHex(s){
@@ -72,7 +72,7 @@ export function getKeyArray(...fields) {
   return _.reduce(
     _.flatten(fields),
     (result, value)=>{
-      return result ? result.concat(_.flatten([separator, value])) : _.flatten([value])
+      return result ? result.concat(_.flatten([SEPARATOR, value])) : _.flatten([value])
     },
     null
   )
