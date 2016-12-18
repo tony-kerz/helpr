@@ -113,3 +113,7 @@ export function compress(s, {compression=COMPRESSION}={}) {
 export function decompress(s, {compression=COMPRESSION}={}) {
   return zlib.inflateSync(Buffer.from(s, compression)).toString()
 }
+
+export function join(args, {separator='.'}={}){
+  return args ? _.pullAll(args, [null, undefined, '']).join(separator) : args
+}

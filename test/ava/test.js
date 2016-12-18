@@ -14,7 +14,8 @@ import {
   compress,
   decompress,
   COMPRESSION,
-  SEPARATOR
+  SEPARATOR,
+  join
 } from '../../src'
 
 const dbg = debug('app:helpr')
@@ -125,4 +126,15 @@ test('compress', t => {
     s.length, _s.length, _s.length/s.length
   )
   t.is(s, decompress(_s))
+})
+
+test('join', (t)=>{
+  t.is(join([null, 'foo']), 'foo')
+  t.is(join(['foo', null]), 'foo')
+  t.is(join(['foo', 'bar']), 'foo.bar')
+  t.is(join([]), '')
+  t.is(join([null]), '')
+  t.is(join([null, null]), '')
+  t.is(join([undefined]), '')
+  t.is(join(null), null)
 })
