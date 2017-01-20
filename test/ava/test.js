@@ -101,7 +101,7 @@ test('parseBoolean', t => {
   t.false(parseBoolean(undefined))
 })
 
-test('getKey', (t)=>{
+test('getKey', t => {
   t.truthy(getKey('foo', 'bar'), 'foo:bar')
 })
 
@@ -123,12 +123,12 @@ test('compress', t => {
   dbg('compress: compressed=[%s]', _s)
   dbg(
     'compress: uncompressed-length=%o, compressed-length=%o, ratio=%o',
-    s.length, _s.length, _s.length/s.length
+    s.length, _s.length, _s.length / s.length
   )
   t.is(s, decompress(_s))
 })
 
-test('join', (t)=>{
+test('join', t => {
   t.is(join([null, 'foo']), 'foo')
   t.is(join(['foo', null]), 'foo')
   t.is(join(['foo', 'bar']), 'foo.bar')
