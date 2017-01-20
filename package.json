@@ -1,6 +1,6 @@
 {
   "name": "helpr",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "repository": {
@@ -9,11 +9,10 @@
   },
   "scripts": {
     "ava": "cross-env DEBUG=test:*,app:* ava test/ava",
-    "pretest": "npm run eslint",
+    "pretest": "xo",
     "test": "npm run ava",
     "prebuild": "npm run test",
-    "build": "babel ./src -d ./dist",
-    "eslint": "eslint ./src ./test"
+    "build": "babel ./src -d ./dist"
   },
   "author": "tony kerz",
   "license": "ISC",
@@ -21,15 +20,14 @@
     "debug": "^2.3.2",
     "fast-safe-stringify": "^1.1.1",
     "jsondiffpatch": "^0.2.4",
-    "lodash": "^4.16.6"
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "ava": "0.17.0",
-    "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
+    "babel-cli": "^6.22.1",
+    "babel-preset-env": "^1.1.4",
     "cross-env": "^3.1.3",
-    "eslint": "^3.10.2"
+    "xo": "^0.17.1"
   },
   "ava": {
     "babel": "inherit",
@@ -37,5 +35,9 @@
       "babel-register",
       "babel-polyfill"
     ]
+  },
+  "xo": {
+    "space": true,
+    "semicolon": false
   }
 }

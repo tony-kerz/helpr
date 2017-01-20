@@ -1,7 +1,8 @@
+import zlib from 'zlib'
+import assert from 'assert'
 import diff from 'jsondiffpatch'
 import fastStringify from 'fast-safe-stringify'
 import _ from 'lodash'
-import zlib from 'zlib'
 
 const zip5Regex = /^\d{5}$/
 const zipRegex = /^\d{5}(\d{4})?$/
@@ -9,7 +10,7 @@ const hexRegex = /^[0-9A-Fa-f]+$/
 export const SEPARATOR = ':'
 export const COMPRESSION = 'base64'
 
-export function isHex(s){
+export function isHex(s) {
   return hexRegex.test(s)
 }
 
@@ -30,11 +31,11 @@ export function isFloat(val) {
 }
 
 export function containsChar(val, char) {
-  return isSpecified(val) && val.toString().indexOf(char) != -1
+  return isSpecified(val) && val.toString().indexOf(char) !== -1
 }
 
 export function isEmpty(val) {
-  return !isSpecified(val) || (val.toString().trim().length == 0)
+  return !isSpecified(val) || (val.toString().trim().length === 0)
 }
 
 export function isBoolean(val) {
@@ -49,18 +50,17 @@ export function isSpecified(val) {
   return ![null, undefined].includes(val)
 }
 
-export function pretty(val){
+export function pretty(val) {
   return JSON.stringify(val, null, 2)
 }
 
-export function diffConsole({actual, expected}){
+export function diffConsole({actual, expected}) {
   const delta = diff.diff(actual, expected)
-  // eslint-disable-next-line
   console.log('diff output:')
   diff.console.log(delta)
 }
 
-export function stringify(s){
+export function stringify(s) {
   return fastStringify(s)
 }
 
@@ -71,7 +71,7 @@ export function getKey(...fields) {
 export function getKeyArray(...fields) {
   return _.reduce(
     _.flatten(fields),
-    (result, value)=>{
+    (result, value) => {
       return result ? result.concat(_.flatten([SEPARATOR, value])) : _.flatten([value])
     },
     null
@@ -92,7 +92,7 @@ export function getType(value) {
 export function getWithTypes(o) {
   return _.transform(
     o,
-    (result, value, key)=>{
+    (result, value, key) => {
       result[key] = {
         value,
         type: getType(value)
@@ -103,17 +103,23 @@ export function getWithTypes(o) {
 
 // http://stackoverflow.com/a/4540443/2371903
 export function xor(a, b) {
-  return (!a != !b)
+  return (!a !== !b)
 }
 
-export function compress(s, {compression=COMPRESSION}={}) {
+export function compress(s, {compression = COMPRESSION} = {}) {
   return zlib.deflateSync(s).toString(compression)
 }
 
-export function decompress(s, {compression=COMPRESSION}={}) {
+export function decompress(s, {compression = COMPRESSION} = {}) {
   return zlib.inflateSync(Buffer.from(s, compression)).toString()
 }
 
-export function join(args, {separator='.'}={}){
+export function join(args, {separator = '.'} = {}) {
   return args ? _.pullAll(args, [null, undefined, '']).join(separator) : args
+}
+
+export function transformField({target, field, transformer}) {
+  assert(transformer, 'transformer required')
+  const value = transformer(_.get(target, field))
+  return (!value || _.isEmpty(value)) ? _.omit(target, field) : _.set(target, field, value)
 }
