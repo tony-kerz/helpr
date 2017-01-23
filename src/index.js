@@ -56,6 +56,7 @@ export function pretty(val) {
 
 export function diffConsole({actual, expected}) {
   const delta = diff.diff(actual, expected)
+  // eslint-disable-next-line no-console
   console.log('diff output:')
   diff.console.log(delta)
 }
@@ -122,4 +123,8 @@ export function transformField({target, field, transformer}) {
   assert(transformer, 'transformer required')
   const value = transformer(_.get(target, field))
   return (!value || _.isEmpty(value)) ? _.omit(target, field) : _.set(target, field, value)
+}
+
+export function debugElements({dbg, msg, o}) {
+  _.each(o, (val, key) => dbg(`${msg}[${key}]=${stringify(val)}`))
 }
