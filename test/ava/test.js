@@ -15,7 +15,8 @@ import {
   decompress,
   COMPRESSION,
   SEPARATOR,
-  join
+  join,
+  debugElements
 } from '../../src'
 
 const dbg = debug('app:helpr')
@@ -137,4 +138,12 @@ test('join', t => {
   t.is(join([null, null]), '')
   t.is(join([undefined]), '')
   t.is(join(null), null)
+})
+
+test('debugElements: object', () => {
+  debugElements({dbg, msg: 'anObject', o: {foo: 'foo', bar: 'bar', baz: {bip: 'bip'}}})
+})
+
+test('debugElements: array', () => {
+  debugElements({dbg, msg: 'anArray', o: [{foo: 'foo'}, {bar: 'bar'}, {baz: {bip: 'bip'}}]})
 })
