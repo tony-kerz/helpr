@@ -1,5 +1,6 @@
 import test from 'ava'
 import debug from 'debug'
+import {chill} from 'test-helpr'
 import {
   isZip5,
   isZip,
@@ -16,10 +17,11 @@ import {
   COMPRESSION,
   SEPARATOR,
   join,
-  debugElements
+  debugElements,
+  resolveValues
 } from '../../src'
 
-const dbg = debug('app:helpr')
+const dbg = debug('test:helpr')
 
 test('isZip5', t => {
   t.true(isZip5('12345'))
@@ -146,4 +148,21 @@ test('debugElements: object', () => {
 
 test('debugElements: array', () => {
   debugElements({dbg, msg: 'anArray', o: [{foo: 'foo'}, {bar: 'bar'}, {baz: {bip: 'bip'}}]})
+})
+
+test('resolveValues', async t => {
+  const foo = 'foo'
+  const bar = 'bar'
+  const baz = 'baz'
+
+  t.deepEqual(
+    await resolveValues(
+      {
+        [foo]: chill({millis: 5, resolution: foo}),
+        [bar]: chill({millis: 10, resolution: bar}),
+        [baz]: chill({millis: 15, resolution: baz})
+      }
+    ),
+    {foo, bar, baz}
+  )
 })
