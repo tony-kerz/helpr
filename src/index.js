@@ -128,3 +128,12 @@ export function transformField({target, field, transformer}) {
 export function debugElements({dbg, msg, o}) {
   _.each(o, (val, key) => dbg(`${msg}[${key}]=${stringify(val)}`))
 }
+
+export async function resolveValues(o) {
+  const map = new Map()
+  _.each(o, (val, key) => {
+    map.set(key, val)
+  })
+  const resolved = await Promise.all(map.values())
+  return _.zipObject(Array.from(map.keys()), resolved)
+}
