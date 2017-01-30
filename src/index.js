@@ -7,6 +7,8 @@ import _ from 'lodash'
 const zip5Regex = /^\d{5}$/
 const zipRegex = /^\d{5}(\d{4})?$/
 const hexRegex = /^[0-9A-Fa-f]+$/
+const isoDateRegex = /(\d{4})-(\d{2})-(\d{2})T((\d{2}):(\d{2}):(\d{2}))\.(\d{3})Z/
+
 export const SEPARATOR = ':'
 export const COMPRESSION = 'base64'
 
@@ -28,6 +30,10 @@ export function isNumber(val) {
 
 export function isFloat(val) {
   return isNumber(val) && containsChar(val, '.')
+}
+
+export function isIsoDate(value) {
+  return isoDateRegex.test(value)
 }
 
 export function containsChar(val, char) {
@@ -136,4 +142,26 @@ export async function resolveValues(o) {
   })
   const resolved = await Promise.all(map.values())
   return _.zipObject(Array.from(map.keys()), resolved)
+}
+
+export function isListed({list, key, value}) {
+  return list && _.some(list, (elt, index, list) => {
+    return (_.isString(elt) && (elt === key)) || (_.isFunction(elt) && elt({key, value, list}))
+  })
+}
+
+export function parseValue(value) {
+  let _value = value
+  if (isBoolean(value)) {
+    _value = parseBoolean(value)
+  } else if (isFloat(value)) {
+    _value = parseFloat(value)
+  } else if (isNumber(value)) {
+    _value = parseInt(value, 10)
+  } else if (isIsoDate(value)) {
+    _value = Date.parse(value)
+  } else if (Array.isArray(value)) {
+    _value = value.map(parseValue)
+  }
+  return _value
 }
