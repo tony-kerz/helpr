@@ -18,7 +18,9 @@ import {
   SEPARATOR,
   join,
   debugElements,
-  resolveValues
+  resolveValues,
+  isListed,
+  parseValue
 } from '../../src'
 
 const dbg = debug('test:helpr')
@@ -165,4 +167,24 @@ test('resolveValues', async t => {
     ),
     {foo, bar, baz}
   )
+})
+
+test('isListed: basic', t => {
+  t.true(isListed({list: ['foo'], key: 'foo'}))
+  t.false(isListed({list: ['foo'], key: 'bar'}))
+})
+
+test('isListed: function', t => {
+  t.true(isListed({list: [({key, value}) => key === 'foo' && value === 'bar'], key: 'foo', value: 'bar'}))
+  t.false(isListed({list: [({key, value}) => key === 'foo' && value === 'bar'], key: 'foo', value: 'baz'}))
+})
+
+test('parseValue', t => {
+  t.is(parseValue('foo'), 'foo')
+  t.is(parseValue('1'), 1)
+  t.is(parseValue('1.1'), 1.1)
+  t.is(parseValue('true'), true)
+  t.is(parseValue('false'), false)
+  t.is(parseValue('1928-04-26T06:48:47.504Z'), Date.parse('1928-04-26T06:48:47.504Z'))
+  t.deepEqual(parseValue(['1', '2']), [1, 2])
 })
