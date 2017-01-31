@@ -151,17 +151,18 @@ export function isListed({list, key, value}) {
 }
 
 export function parseValue(value) {
-  let _value = value
-  if (isBoolean(value)) {
-    _value = parseBoolean(value)
+  if (value === 'null') {
+    return null
+  } else if (isBoolean(value)) {
+    return parseBoolean(value)
   } else if (isFloat(value)) {
-    _value = parseFloat(value)
+    return parseFloat(value)
   } else if (isNumber(value)) {
-    _value = parseInt(value, 10)
+    return parseInt(value, 10)
   } else if (isIsoDate(value)) {
-    _value = Date.parse(value)
+    return Date.parse(value)
   } else if (Array.isArray(value)) {
-    _value = value.map(parseValue)
+    return value.map(parseValue)
   }
-  return _value
+  return value
 }

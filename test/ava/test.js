@@ -20,7 +20,8 @@ import {
   debugElements,
   resolveValues,
   isListed,
-  parseValue
+  parseValue,
+  isIsoDate
 } from '../../src'
 
 const dbg = debug('test:helpr')
@@ -187,4 +188,16 @@ test('parseValue', t => {
   t.is(parseValue('false'), false)
   t.is(parseValue('1928-04-26T06:48:47.504Z'), Date.parse('1928-04-26T06:48:47.504Z'))
   t.deepEqual(parseValue(['1', '2']), [1, 2])
+  t.is(parseValue('null'), null)
+})
+
+test('isIsoDate: good', t => {
+  t.true(isIsoDate('2011-10-05T14:48:00.000Z'))
+})
+
+test('isIsoDate: bad', t => {
+  t.false(isIsoDate('2011-10-05T14:48:00.0000Z'))
+  t.false(isIsoDate('2011-10-05T14:48:000Z'))
+  t.false(isIsoDate('2011-10-05T14:488Z'))
+  t.false(isIsoDate('2011-10-055'))
 })
