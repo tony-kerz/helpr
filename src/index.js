@@ -11,6 +11,7 @@ const isoDateRegex = /(\d{4})-(\d{2})-(\d{2})T((\d{2}):(\d{2}):(\d{2}))\.(\d{3})
 
 export const SEPARATOR = ':'
 export const COMPRESSION = 'base64'
+export const VALIDATION_ERROR = 'ValidationError'
 
 export function isHex(s) {
   return hexRegex.test(s)
