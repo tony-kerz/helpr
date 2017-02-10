@@ -4,6 +4,8 @@ import diff from 'jsondiffpatch'
 import fastStringify from 'fast-safe-stringify'
 import _ from 'lodash'
 
+export * from './args'
+
 const zip5Regex = /^\d{5}$/
 const zipRegex = /^\d{5}(\d{4})?$/
 const hexRegex = /^[0-9A-Fa-f]+$/
