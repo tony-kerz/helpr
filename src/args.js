@@ -20,26 +20,26 @@ export function getArgDefaults() {
 }
 
 export function clearArgDefault(key) {
-  delete process.env[defaultName(key)]
+  delete process.env[defaultKey(key)]
 }
 
 export function setArgDefault({key, value}) {
-  process.env[defaultName(key)] = value
+  process.env[defaultKey(key)] = value
 }
 
-function defaultName(key) {
+function defaultKey(key) {
   return `${defaultPrefix}${key}`
 }
 
-export function getArg(name, {dflt} = {}) {
-  assert(name, 'name required')
-  const arg = argv[name]
-  const env = process.env[defaultName(name)]
-  dbg('get-arg: name=%o, arg=%o, env=%o, dflt=%o', name, arg, env, dflt)
+export function getArg(key, {dflt} = {}) {
+  assert(key, 'key required')
+  const arg = argv[key]
+  const env = process.env[defaultKey(key)]
+  dbg('get-arg: key=%o, arg=%o, env=%o, dflt=%o', key, arg, env, dflt)
   return arg || env || dflt
 }
 
-export function getJsonArg(name, {dflt = {}} = {}) {
-  const arg = getArg(name)
+export function getJsonArg(key, {dflt = {}} = {}) {
+  const arg = getArg(key)
   return arg ? JSON.parse(arg) : dflt
 }

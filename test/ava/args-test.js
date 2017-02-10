@@ -3,34 +3,34 @@ import _ from 'lodash'
 import {setArgDefault, getArg, clearArgDefault, clearArgDefaults, getJsonArg} from '../../src'
 
 test('setArgDefault', t => {
-  const name = 'foo'
-  let foo = getArg(name)
+  const key = 'foo'
+  let foo = getArg(key)
   t.falsy(foo)
-  setArgDefault({key: name, value: 'bar'})
-  foo = getArg(name)
+  setArgDefault({key, value: 'bar'})
+  foo = getArg(key)
   t.is(foo, 'bar')
-  clearArgDefault(name)
-  foo = getArg(name)
+  clearArgDefault(key)
+  foo = getArg(key)
   t.falsy(foo)
 })
 
 test('clearArgDefaults', t => {
-  const name = 'foo'
-  let foo = getArg(name)
+  const key = 'foo'
+  let foo = getArg(key)
   t.falsy(foo)
-  setArgDefault({key: name, value: 'bar'})
-  foo = getArg(name)
+  setArgDefault({key, value: 'bar'})
+  foo = getArg(key)
   t.is(foo, 'bar')
   clearArgDefaults()
-  foo = getArg(name)
+  foo = getArg(key)
   t.falsy(foo)
 })
 
 test('getJsonArg', t => {
-  const name = 'foo'
-  let foo = getJsonArg(name)
+  const key = 'foo'
+  let foo = getJsonArg(key)
   t.deepEqual(foo, {})
-  setArgDefault({key: name, value: '{"foo": "bar"}'})
-  foo = getJsonArg(name)
+  setArgDefault({key, value: '{"foo": "bar"}'})
+  foo = getJsonArg(key)
   t.deepEqual(foo, {foo: 'bar'})
 })
