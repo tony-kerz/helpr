@@ -8,6 +8,7 @@ const defaultPrefix = '__default__'
 const argv = minimist(process.argv.slice(2))
 
 export function clearArgDefaults() {
+  dbg('clear-arg-defaults')
   _.each(process.env, (val, key) => {
     if (key.startsWith(defaultPrefix)) {
       delete process.env[key]
@@ -20,10 +21,13 @@ export function getArgDefaults() {
 }
 
 export function clearArgDefault(key) {
+  dbg('clear-arg-default: key=%o', key)
   delete process.env[defaultKey(key)]
 }
 
 export function setArgDefault({key, value}) {
+  assert(key, 'key required')
+  dbg('set-arg-default: key=%o, value=%o', key, value)
   process.env[defaultKey(key)] = value
 }
 
