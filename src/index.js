@@ -169,18 +169,20 @@ export function parseValue(value) {
   return value
 }
 
-export function combine({first = {}, second = {}, operator = _.identity}) {
-  const result = _.transform(first, (result, val, key) => {
-    if (_.has(second, key)) {
-      result[key] = operator(val, second[key])
+export function combine({target = {}, source = {}, operator = _.identity, union}) {
+  const result = _.transform(target, (result, val, key) => {
+    if (_.has(source, key)) {
+      result[key] = operator(val, source[key])
     } else {
       result[key] = val
     }
   })
-  _.each(second, (val, key) => {
-    if (!_.has(result, key)) {
-      result[key] = val
-    }
-  })
+  if (union) {
+    _.each(source, (val, key) => {
+      if (!_.has(result, key)) {
+        result[key] = val
+      }
+    })
+  }
   return result
 }
