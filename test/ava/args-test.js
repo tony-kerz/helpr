@@ -1,6 +1,6 @@
 import test from 'ava'
 import _ from 'lodash'
-import {setArgDefault, getArg, clearArgDefault, clearArgDefaults, getJsonArg} from '../../src'
+import {setArgDefault, getArg, clearArgDefault, clearArgDefaults, getJsonArg, getRequiredArg} from '../../src'
 
 test('setArgDefault', t => {
   const key = 'foo'
@@ -33,4 +33,10 @@ test('getJsonArg', t => {
   setArgDefault({key, value: '{"foo": "bar"}'})
   foo = getJsonArg(key)
   t.deepEqual(foo, {foo: 'bar'})
+})
+
+test('getRequiredArg', t => {
+  clearArgDefaults()
+  const error = t.throws(() => getRequiredArg('nope'))
+  t.is(error.message, '[nope] argument required')
 })

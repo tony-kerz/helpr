@@ -43,6 +43,14 @@ export function getArg(key, {dflt} = {}) {
   return arg || env || dflt
 }
 
+export function getRequiredArg(key) {
+  const val = getArg(key)
+  if (!val) {
+    throw new Error(`[${key}] argument required`)
+  }
+  return val
+}
+
 export function getJsonArg(key, {dflt = {}} = {}) {
   const arg = getArg(key)
   return arg ? JSON.parse(arg) : dflt
