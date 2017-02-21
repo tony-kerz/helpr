@@ -1,6 +1,6 @@
 {
   "name": "helpr",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "",
   "main": "dist/index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/tony-kerz/node-helpr.git"
   },
   "scripts": {
-    "ava": "cross-env DEBUG=test:*,app:* ava test/ava",
+    "ava": "cross-env DEBUG=test:*,app:* ava",
     "pretest": "xo",
     "test": "npm run ava",
     "prebuild": "npm run test",
