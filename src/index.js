@@ -3,9 +3,9 @@ import assert from 'assert'
 import diff from 'jsondiffpatch'
 import fastStringify from 'fast-safe-stringify'
 import _ from 'lodash'
-import debug from 'debug'
+// import debug from 'debug'
 
-const dbg = debug('app:helpr')
+// const dbg = debug('app:helpr')
 
 export * from './args'
 
@@ -193,13 +193,13 @@ export function combine({target = {}, source = {}, operator = _.identity, union}
 }
 
 export function deepClean(object, predicate = _.identity) {
-  dbg('deep-clean: object=%o, type=%o', object, getType(object))
+  // dbg('deep-clean: object=%o, type=%o', object, getType(object))
   let result
   if (Array.isArray(object)) {
-    dbg('deep-clean: array=%o', object)
+    // dbg('deep-clean: array=%o', object)
     result = _.filter(_.map(object, _value => deepClean(_value, predicate)))
   } else if (_.isPlainObject(object)) {
-    dbg('deep-clean: object=%o', object)
+    // dbg('deep-clean: object=%o', object)
     result = _.transform(
       object,
       (result, value, key) => {
@@ -209,37 +209,14 @@ export function deepClean(object, predicate = _.identity) {
         } else if (_result) {
           result[key] = _result
         }
-        dbg('deep-clean: key=%o, val=%o, result=%o', key, value, result)
+        // dbg('deep-clean: key=%o, val=%o, result=%o', key, value, result)
       }
     )
   } else {
-    dbg('deep-clean: primitive=%o', object)
+    // dbg('deep-clean: primitive=%o', object)
     return object
   }
 
-  dbg('result=%o', result)
+  // dbg('result=%o', result)
   return _.isEmpty(result) ? null : result
 }
-        // let isPrimitive = false
-        // let _result
-        // if (Array.isArray(value)) {
-        //   dbg('deep-clean: array=%o', value)
-        //   _result = _.filter(_.map(value, _value => deepClean(_value, predicate)))
-        // } else if (_.isPlainObject(value)) {
-        //   dbg('deep-clean: object=%o', value)
-        //   _result = deepClean(value, predicate)
-        // } else {
-        //   dbg('deep-clean: primitive=%o', value)
-        //   _result = value
-        //   isPrimitive = true
-        // }
-        // dbg('_result=%o', _result)
-        // if ((isPrimitive && _result) || !_.isEmpty(_result)) {
-        //   result[key] = _result
-        // }
-      // }
-//     dbg('result=%o', result)
-//     return _.isEmpty(result) ? null : result
-//   }
-//   return object
-// }

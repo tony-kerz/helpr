@@ -51,10 +51,17 @@ test('deepClean: basic', t => {
   )
 })
 
-test('deepClean: array', t => {
+test('deepClean: array fields', t => {
   t.deepEqual(
     deepClean({a: [1, null, 2], b: [], c: [null, null, {}, []]}),
     {a: [1, 2]}
+  )
+})
+
+test('deepClean: array', t => {
+  t.deepEqual(
+    deepClean([{a: [1, null, 2]}, {b: []}, {c: [null, null, {}, []]}, null, 0, false]),
+    [{a: [1, 2]}]
   )
 })
 
