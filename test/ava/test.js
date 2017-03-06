@@ -21,7 +21,8 @@ import {
   resolveValues,
   isListed,
   parseValue,
-  isIsoDate
+  isIsoDate,
+  splitAndTrim
 } from '../../src'
 
 const dbg = debug('test:helpr')
@@ -200,4 +201,18 @@ test('isIsoDate: bad', t => {
   t.false(isIsoDate('2011-10-05T14:48:000Z'))
   t.false(isIsoDate('2011-10-05T14:488Z'))
   t.false(isIsoDate('2011-10-055'))
+})
+
+test('splitAndTrim', t => {
+  t.deepEqual(splitAndTrim('a , b ,   c'), ['a', 'b', 'c'])
+  t.deepEqual(splitAndTrim('a, b ,,,,c'), ['a', 'b', 'c'])
+  t.deepEqual(splitAndTrim('a b c', {delimiter: ' '}), ['a', 'b', 'c'])
+  t.deepEqual(splitAndTrim('a|b|c', {delimiter: '|'}), ['a', 'b', 'c'])
+  t.falsy(splitAndTrim(' '))
+  t.falsy(splitAndTrim(' , , '))
+  t.falsy(splitAndTrim(',,,,'))
+  t.falsy(splitAndTrim(3))
+  t.falsy(splitAndTrim(null))
+  t.falsy(splitAndTrim())
+  t.falsy(splitAndTrim([]))
 })

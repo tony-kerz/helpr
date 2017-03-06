@@ -221,3 +221,18 @@ export function deepClean(object, predicate = _.identity) {
   // dbg('result=%o', result)
   return _.isEmpty(result) ? null : result
 }
+
+export function splitAndTrim(s, {delimiter = ','} = {}) {
+  if (_.isString(s)) {
+    const result = _.transform(
+      s.split(delimiter),
+      (_result, val) => {
+        const _val = val.trim()
+        if (_val) {
+          _result.push(_val)
+        }
+      }
+    )
+    return !_.isEmpty(result) && result
+  }
+}
