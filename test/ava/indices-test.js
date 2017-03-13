@@ -145,3 +145,43 @@ test('indices: deeper', t => {
     [0, 0, 0, 0, 0, 0]
   )
 })
+
+test('indices: intermediate', t => {
+  const array = [
+    {
+      one: {
+        two: [
+          {
+            _id: 1
+          },
+          {
+            _id: 2
+          }
+        ]
+      }
+    },
+    {
+      one: {
+        two: [
+          {
+            _id: 3
+          },
+          {
+            _id: 4
+          }
+        ]
+      }
+    }
+  ]
+
+  t.deepEqual(
+    findDeepIndices(
+      {
+        array,
+        path: ['one.two'],
+        predicate: elt => elt._id === 3
+      }
+    ),
+    [1, 0]
+  )
+})
