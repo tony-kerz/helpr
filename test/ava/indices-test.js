@@ -145,3 +145,79 @@ test('indices: deeper', t => {
     [0, 0, 0, 0, 0, 0]
   )
 })
+
+test('indices: array in object', t => {
+  const array = [
+    {
+      one: {
+        two: [
+          {
+            _id: 1
+          },
+          {
+            _id: 2
+          }
+        ]
+      }
+    },
+    {
+      one: {
+        two: [
+          {
+            _id: 3
+          },
+          {
+            _id: 4
+          }
+        ]
+      }
+    }
+  ]
+
+  t.deepEqual(
+    findDeepIndices(
+      {
+        array,
+        path: ['one.two'],
+        predicate: elt => elt._id === 3
+      }
+    ),
+    [1, 0]
+  )
+})
+
+test('indices: object in array', t => {
+  const array = [
+    {
+      one: [
+        {two: {_id: 1}}
+      ]
+    },
+    {
+      one: [
+        {two: {_id: 2}}
+      ]
+    },
+    {
+      one: [
+        {two: {_id: 3}}
+      ]
+    },
+    {
+      one: [
+        {two: {_id: 4}}
+      ]
+    }
+  ]
+
+  t.deepEqual(
+    findDeepIndices(
+      {
+        array,
+        path: ['one'],
+        predicate: elt => elt.two._id === 3
+      }
+    ),
+    [2, 0]
+  )
+})
