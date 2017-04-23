@@ -21,6 +21,7 @@
     "fast-safe-stringify": "^1.1.3",
     "jsondiffpatch": "^0.2.4",
     "lodash": "^4.17.4",
+    "lru-cache": "^4.0.2",
     "minimist": "^1.2.0"
   },
   "devDependencies": {
@@ -42,7 +43,14 @@
     "space": true,
     "semicolon": false,
     "rules": {
-      "no-console": "error"
+      "no-console": "error",
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit": true,
+          "allowTernary": true
+        }
+      ]
     }
   }
 }
