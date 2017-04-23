@@ -10,6 +10,7 @@ import _ from 'lodash'
 export * from './indices'
 export * from './args'
 export * from './is-like'
+export * from './cache-manager'
 
 const zip5Regex = /^\d{5}$/
 const zipRegex = /^\d{5}(\d{4})?$/
