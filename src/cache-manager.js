@@ -46,6 +46,9 @@ async function _createCache(opts) {
       }
       return val
     },
-    set: ({key, value}) => cache.set(key, value)
+    set: ({key, value}) => cache.set(key, value),
+    has: key => cache.has(key),
+    del: key => cache.del(key),
+    reset: () => cache.reset()
   }
 }
