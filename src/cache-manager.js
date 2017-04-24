@@ -30,7 +30,7 @@ async function _createCache(opts) {
 
   return {
     stats: () => {
-      return {hits, misses, missing}
+      return {hits, misses, missing, items: cache.itemCount}
     },
     get: async key => {
       let val = cache.get(key)
@@ -39,16 +39,18 @@ async function _createCache(opts) {
       } else {
         misses++
         val = await opts.get(key)
-        if (!val) {
+        if (val) {
+          cache.set(key, val)
+        } else {
           missing++
         }
-        cache.set(key, val)
       }
       return val
     },
     set: ({key, value}) => cache.set(key, value),
     has: key => cache.has(key),
     del: key => cache.del(key),
-    reset: () => cache.reset()
+    reset: () => cache.reset(),
+    _cache: cache
   }
 }
