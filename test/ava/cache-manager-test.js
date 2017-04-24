@@ -23,5 +23,5 @@ test('cacheManager', async t => {
   t.deepEqual(await cache.get('thing1.1'), {hello: 'world'})
   t.deepEqual(await cache.get('thing1.2'), {hello: 'thing1.2'})
   t.falsy(await cache.get(1))
-  t.deepEqual(cache.stats(), {hits: 1, misses: 2, missing: 1, items: 2})
+  t.deepEqual(cache.stats(), {hits: 1, misses: 2, missing: 1, items: 1})
 })
