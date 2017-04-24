@@ -25,7 +25,7 @@ async function _createCache(opts) {
   let hits = 0
   let misses = 0
   let missing = 0
-  const cache = getCache(opts.opts)
+  const cache = getCache(opts)
   opts.init && await opts.init(cache)
 
   return {
