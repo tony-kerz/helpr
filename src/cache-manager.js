@@ -20,15 +20,15 @@ export async function getCacheManager(opts) {
   }
 }
 
-async function _createCache(opts) {
+async function _createCache(opts = {}) {
   dbg('init: opts=%j', opts)
   let hits = 0
   let misses = 0
   let missing = 0
-  const cache = getCache(opts)
-  opts.init && await opts.init(cache)
+  const cache = opts.max && getCache(opts)
+  opts.max && opts.init && await opts.init(cache)
 
-  return {
+  return cache && {
     stats: () => {
       return {hits, misses, missing, items: cache.itemCount}
     },
