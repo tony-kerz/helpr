@@ -31,8 +31,9 @@ async function _createCache({key, opts = {}}) {
   opts.max && opts.init && await opts.init(cache)
 
   return cache && {
+    name: () => key,
     stats: () => {
-      return {hits, misses, missing, items: cache.itemCount}
+      return {key, hits, misses, missing, items: cache.itemCount}
     },
     get: async key => {
       let val = cache.get(key)
