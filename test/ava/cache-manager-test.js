@@ -27,7 +27,7 @@ test('cacheManager', async t => {
 })
 
 test('cacheManager: change', async t => {
-  const cacheManager = await getCacheManager({thing1: {}})
+  const cacheManager = await getCacheManager({thing1: {max: 1}})
   t.truthy(cacheManager)
   const cache = cacheManager.get('thing1')
   t.truthy(cache)
@@ -38,4 +38,11 @@ test('cacheManager: change', async t => {
   const _thing = await cache.get('thing1.1')
   t.truthy(_thing)
   t.deepEqual(_thing, {foo: 'baz'})
+})
+
+test('cacheManager: null', async t => {
+  const cacheManager = await getCacheManager({thing1: {}})
+  t.truthy(cacheManager)
+  const cache = cacheManager.get('thing1')
+  t.falsy(cache)
 })
