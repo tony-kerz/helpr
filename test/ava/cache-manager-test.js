@@ -25,3 +25,17 @@ test('cacheManager', async t => {
   t.falsy(await cache.get(1))
   t.deepEqual(cache.stats(), {hits: 1, misses: 2, missing: 1, items: 1})
 })
+
+test('cacheManager: change', async t => {
+  const cacheManager = await getCacheManager({thing1: {}})
+  t.truthy(cacheManager)
+  const cache = cacheManager.get('thing1')
+  t.truthy(cache)
+  cache.set({key: 'thing1.1', value: {foo: 'bar'}})
+  const thing = await cache.get('thing1.1')
+  t.truthy(thing)
+  thing.foo = 'baz'
+  const _thing = await cache.get('thing1.1')
+  t.truthy(_thing)
+  t.deepEqual(_thing, {foo: 'baz'})
+})

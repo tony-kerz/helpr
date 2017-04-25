@@ -38,7 +38,7 @@ async function _createCache(opts) {
         hits++
       } else {
         misses++
-        val = await opts.get(key)
+        val = opts.get && await opts.get(key)
         if (val) {
           cache.set(key, val)
         } else {
