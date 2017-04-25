@@ -22,7 +22,8 @@
     "jsondiffpatch": "^0.2.4",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "tymer": "^1.0.3"
   },
   "devDependencies": {
     "ava": "^0.18.1",

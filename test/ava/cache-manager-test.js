@@ -17,6 +17,7 @@ test('cacheManager', async t => {
       }
     }
   )
+  t.truthy(cacheManager)
   const cache = cacheManager.get('thing1')
   t.truthy(cache)
   t.deepEqual(cache.stats(), {hits: 0, misses: 0, missing: 0, items: 1})
