@@ -30,14 +30,9 @@ async function _createCache({key, opts = {}}) {
   const timer = new Timer(`${key}-get`)
 
   if (opts.onEvict) {
-    // opts.dispose = (key, val) => {
-    //   dbg('dispose: key=%o, val=%j', key, val)
-    //   evictPromises.push(opts.onEvict(key, val))
-    // }
-    opts.dispose = function (key, val) {
-      dbg('dispose: args=%j', arguments)
-      dbg('dispose: key=%o, val=%j', key, val)
-      evictPromises.push(opts.onEvict(key, val))
+    opts.dispose = (key, value) => {
+      dbg('dispose: key=%o, value=%j', key, value)
+      evictPromises.push(opts.onEvict({key, value}))
     }
   }
 
