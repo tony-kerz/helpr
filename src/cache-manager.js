@@ -26,7 +26,21 @@ async function _createCache({key, opts = {}}) {
   let hits = 0
   let misses = 0
   let missing = 0
+  const evictPromises = []
   const timer = new Timer(`${key}-get`)
+
+  if (opts.onEvict) {
+    // opts.dispose = (key, val) => {
+    //   dbg('dispose: key=%o, val=%j', key, val)
+    //   evictPromises.push(opts.onEvict(key, val))
+    // }
+    opts.dispose = function (key, val) {
+      dbg('dispose: args=%j', arguments)
+      dbg('dispose: key=%o, val=%j', key, val)
+      evictPromises.push(opts.onEvict(key, val))
+    }
+  }
+
   const cache = opts.max && getCache(opts)
   opts.max && opts.init && await opts.init(cache)
 
@@ -60,6 +74,7 @@ async function _createCache({key, opts = {}}) {
     reset: () => cache.reset(),
     timer: () => timer,
     isThresh: thresh => ((hits + misses) % thresh) === 0,
+    cleanup: async () => Promise.all(evictPromises),
     _cache: cache
   }
 }
