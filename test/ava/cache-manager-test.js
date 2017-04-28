@@ -58,9 +58,9 @@ test('cacheManager: cleanup', async t => {
     {
       thing1: {
         max: 1,
-        onEvict: async (key, val) => {
-          dbg('on-evict: key=%o, val=%j', key, val)
-          evicted[key] = val
+        onEvict: async ({key, value}) => {
+          dbg('on-evict: key=%o, val=%j', key, value)
+          evicted[key] = value
         }
       }
     }
