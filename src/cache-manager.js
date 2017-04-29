@@ -3,12 +3,13 @@ import debug from 'debug'
 import Timer from 'tymer'
 import _ from 'lodash'
 
+/* eslint-disable guard-for-in */
+
 const dbg = debug('app:helpr:cache-manager')
 
 // eslint-disable-next-line import/prefer-default-export
 export async function getCacheManager(opts) {
   const cacheManager = {}
-  // eslint-disable-next-line guard-for-in
   for (const key in opts) {
     cacheManager[key] = await _createCache({key, opts: opts[key]})
   }
@@ -17,7 +18,12 @@ export async function getCacheManager(opts) {
     createCache: async ({key, opts}) => {
       cacheManager[key] = await _createCache({key, opts})
     },
-    get: key => cacheManager[key]
+    get: key => cacheManager[key],
+    reset: async () => {
+      for (const key in cacheManager) {
+        await cacheManager[key].reset()
+      }
+    }
   }
 }
 
@@ -66,7 +72,10 @@ async function _createCache({key, opts = {}}) {
     set: ({key, value}) => cache.set(key, value),
     has: key => cache.has(key),
     del: key => cache.del(key),
-    reset: () => cache.reset(),
+    reset: async () => {
+      cache.reset()
+      opts.init && await opts.init(cache)
+    },
     timer: () => timer,
     isThresh: thresh => ((hits + misses) % thresh) === 0,
     cleanup: async () => Promise.all(evictPromises),
