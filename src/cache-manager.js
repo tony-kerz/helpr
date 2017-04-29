@@ -23,6 +23,11 @@ export async function getCacheManager(opts) {
       for (const key in cacheManager) {
         await cacheManager[key].reset()
       }
+    },
+    cleanup: async () => {
+      for (const key in cacheManager) {
+        await cacheManager[key].cleanup()
+      }
     }
   }
 }
@@ -78,7 +83,10 @@ async function _createCache({key, opts = {}}) {
     },
     timer: () => timer,
     isThresh: thresh => ((hits + misses) % thresh) === 0,
-    cleanup: async () => Promise.all(evictPromises),
+    cleanup: async () => {
+      cache.reset()
+      Promise.all(evictPromises)
+    },
     _cache: cache
   }
 }
