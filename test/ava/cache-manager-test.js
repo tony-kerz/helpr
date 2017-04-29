@@ -95,3 +95,19 @@ test('cacheManager: cleanup', async t => {
   await cache.cleanup()
   t.deepEqual(evicted, {foo: 'bar', _foo: '_bar'})
 })
+
+test('cacheManager: cleanup null', async () => {
+  let evicted = {}
+  const cacheManager = await getCacheManager(
+    {
+      thing1: {
+        max: 0,
+        onEvict: async ({key, value}) => {
+          dbg('on-evict: key=%o, val=%j', key, value)
+          evicted[key] = value
+        }
+      }
+    }
+  )
+  await cacheManager.cleanup()
+})

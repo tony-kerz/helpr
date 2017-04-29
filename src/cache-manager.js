@@ -21,12 +21,12 @@ export async function getCacheManager(opts) {
     get: key => cacheManager[key],
     reset: async () => {
       for (const key in cacheManager) {
-        await cacheManager[key].reset()
+        cacheManager[key] && await cacheManager[key].reset()
       }
     },
     cleanup: async () => {
       for (const key in cacheManager) {
-        await cacheManager[key].cleanup()
+        cacheManager[key] && await cacheManager[key].cleanup()
       }
     }
   }
