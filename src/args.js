@@ -2,6 +2,7 @@ import assert from 'assert'
 import debug from 'debug'
 import _ from 'lodash'
 import minimist from 'minimist'
+import config from 'config'
 
 const dbg = debug('app:helpr:args')
 const defaultPrefix = '__default__'
@@ -39,8 +40,9 @@ export function getArg(key, {dflt} = {}) {
   assert(key, 'key required')
   const arg = argv[key]
   const env = process.env[defaultKey(key)]
-  dbg('get-arg: key=%o, arg=%o, env=%o, dflt=%o', key, arg, env, dflt)
-  return arg || env || dflt
+  const configured = _.get(config, key)
+  dbg('get-arg: key=%o, arg=%o, env=%o, configured=%o, dflt=%o', key, arg, env, configured, dflt)
+  return arg || env || configured || dflt
 }
 
 export function getRequiredArg(key) {

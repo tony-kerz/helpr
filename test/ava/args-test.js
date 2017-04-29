@@ -40,3 +40,7 @@ test('getRequiredArg', t => {
   const error = t.throws(() => getRequiredArg('nope'))
   t.is(error.message, '[nope] argument required')
 })
+
+test('getArg: config', t => {
+  t.is(getArg('a.b.c'), 123)
+})
