@@ -79,13 +79,13 @@ async function _createCache({key, opts = {}}) {
     del: key => cache.del(key),
     reset: async () => {
       cache.reset()
-      opts.init && await opts.init(cache)
+      return opts.init && await opts.init(cache)
     },
     timer: () => timer,
     isThresh: thresh => ((hits + misses) % thresh) === 0,
     cleanup: async () => {
       cache.reset()
-      Promise.all(evictPromises)
+      return Promise.all(evictPromises)
     },
     _cache: cache
   }
