@@ -1,6 +1,7 @@
 import test from 'ava'
 import _ from 'lodash'
 import debug from 'debug'
+import {chill} from 'test-helpr'
 import {getCacheManager} from '../../src'
 
 const dbg = debug('test:helpr:cache-manager')
@@ -83,6 +84,7 @@ test('cacheManager: cleanup', async t => {
         max: 1,
         onEvict: async ({key, value}) => {
           dbg('on-evict: key=%o, val=%j', key, value)
+          await chill({millis: 10, resolution: true})
           evicted[key] = value
         }
       }
@@ -90,7 +92,7 @@ test('cacheManager: cleanup', async t => {
   )
   const cache = cacheManager.get('thing1')
   cache.set({key: 'foo', value: 'bar'})
-  cache.set({key: '_foo', value: '_bar'})
+  await cache.set({key: '_foo', value: '_bar'})
   t.deepEqual(evicted, {foo: 'bar'})
   await cache.cleanup()
   t.deepEqual(evicted, {foo: 'bar', _foo: '_bar'})

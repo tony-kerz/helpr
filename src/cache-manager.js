@@ -50,6 +50,16 @@ async function _createCache({key, opts = {}}) {
   const cache = opts.max && getCache(opts)
   opts.max && opts.init && await opts.init(cache)
 
+  async function insureEvictions() {
+    evictPromises.length && await Promise.all(evictPromises)
+    evictPromises.length = 0
+  }
+
+  async function cleanup() {
+    cache.reset()
+    return insureEvictions()
+  }
+
   return cache && {
     name: () => key,
     stats: () => {
@@ -74,19 +84,24 @@ async function _createCache({key, opts = {}}) {
       }
       return val
     },
-    set: ({key, value}) => cache.set(key, value),
+    set: async ({key, value}) => {
+      const result = cache.set(key, value)
+      await insureEvictions()
+      return result
+    },
     has: key => cache.has(key),
-    del: key => cache.del(key),
+    del: async key => {
+      const result = cache.del(key)
+      await insureEvictions()
+      return result
+    },
     reset: async () => {
-      cache.reset()
+      await cleanup()
       return opts.init && await opts.init(cache)
     },
     timer: () => timer,
     isThresh: thresh => ((hits + misses) % thresh) === 0,
-    cleanup: async () => {
-      cache.reset()
-      return Promise.all(evictPromises)
-    },
+    cleanup,
     _cache: cache
   }
 }
