@@ -77,15 +77,17 @@ test('cacheManager: null', async t => {
 })
 
 test('cacheManager: cleanup', async t => {
-  let evicted = {}
+  const evicted = []
   const cacheManager = await getCacheManager(
     {
       thing1: {
         max: 1,
-        onEvict: async ({key, value}) => {
-          dbg('on-evict: key=%o, val=%j', key, value)
+        onEvict: async ({collection}) => {
           await chill({millis: 10, resolution: true})
-          evicted[key] = value
+          _.each(collection, elt => {
+            dbg('on-evict: key=%o, val=%j', elt.key, elt.value)
+            evicted.push({[elt.key]: elt.value})
+          })
         }
       }
     }
@@ -93,9 +95,9 @@ test('cacheManager: cleanup', async t => {
   const cache = cacheManager.get('thing1')
   cache.set({key: 'foo', value: 'bar'})
   await cache.set({key: '_foo', value: '_bar'})
-  t.deepEqual(evicted, {foo: 'bar'})
+  t.deepEqual(evicted, [{foo: 'bar'}])
   await cache.cleanup()
-  t.deepEqual(evicted, {foo: 'bar', _foo: '_bar'})
+  t.deepEqual(evicted, [{foo: 'bar'}, {_foo: '_bar'}])
 })
 
 test('cacheManager: cleanup null', async () => {
@@ -104,9 +106,11 @@ test('cacheManager: cleanup null', async () => {
     {
       thing1: {
         max: 0,
-        onEvict: async ({key, value}) => {
-          dbg('on-evict: key=%o, val=%j', key, value)
-          evicted[key] = value
+        onEvict: async ({collection}) => {
+          _.each(collection, elt => {
+            dbg('on-evict: key=%o, val=%j', elt.key, elt.value)
+            evicted.push({[elt.key]: elt.value})
+          })
         }
       }
     }

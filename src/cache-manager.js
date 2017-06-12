@@ -37,13 +37,13 @@ async function _createCache({key, opts = {}}) {
   let hits = 0
   let misses = 0
   let missing = 0
-  const evictPromises = []
+  const evictCollection = []
   const timer = new Timer(`${key}-get`)
 
   if (opts.onEvict) {
     opts.dispose = (key, value) => {
       dbg('dispose: key=%o, value=%j', key, value)
-      evictPromises.push(opts.onEvict({key, value}))
+      evictCollection.push({key: key, value: value})
     }
   }
 
@@ -51,13 +51,16 @@ async function _createCache({key, opts = {}}) {
   opts.max && opts.init && await opts.init(cache)
 
   async function insureEvictions() {
-    evictPromises.length && await Promise.all(evictPromises)
-    evictPromises.length = 0
+    if (opts.onEvict) {
+      evictCollection.length && await opts.onEvict({collection: evictCollection})
+      evictCollection.length = 0
+    }
   }
 
   async function cleanup() {
     cache.reset()
-    return insureEvictions()
+    await insureEvictions()
+    return {}
   }
 
   return cache && {
